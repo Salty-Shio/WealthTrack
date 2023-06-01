@@ -10,5 +10,7 @@ const EnvelopeView = () => {
                 
             </div>
         </div>
-    )
-}
+    );
+};
+
+export default EnvelopeView;

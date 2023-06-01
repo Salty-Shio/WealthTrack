@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 
-const OperatorListItem = ( operator ) => {
-    const [balanceType, setBalanceType] = useState('runningTotal');
-    const [operator, setOperator] = useState('-');
-    const [value, setValue] = useState('');
-    const [outputEnvelope, setOutputEnvelope] = useState('');
+const OperatorListItem = (budget , category = {}) => {
+
+    const [balance, setBalance] = useState(category?.balance || 'runningTotal');
+    const [operator, setOperator] = useState(category?.operator || '-');
+    const [value, setValue] = useState(category?.value || '');
+    const [envelope, setEnvelope] = useState(category?.envelope || '');
 
     const handleBalanceTypeChange = (event) => {
-        setBalanceType(event.target.value);
+        setBalance(event.target.value);
     };
 
     const handleOperatorChange = (event) => {
@@ -19,35 +20,38 @@ const OperatorListItem = ( operator ) => {
     };
 
     const handleOutputEnvelopeChange = (event) => {
-        setOutputEnvelope(event.target.value);
+        setEnvelope(event.target.value);
     };
 
     return (
-        <li>
-            <select value={balanceType} onChange={handleBalanceTypeChange}>
-                <option value="runningTotal">Running Total</option>
-                <option value="remainingBalance">Remaining Balance</option>
-            </select>
+        <ul>
+            <li>
+                <select value={balance} onChange={handleBalanceTypeChange}>
+                    <option value="runningTotal">Running Total</option>
+                    <option value="totalBudget">Total Balance</option>
+                </select>
 
-            <select value={operator} onChange={handleOperatorChange}>
-                <option value="-">Subtraction (-)</option>
-                <option value="%">Percentage (%)</option>
-            </select>
+                <select value={operator} onChange={handleOperatorChange}>
+                    <option value="-">Subtraction (-)</option>
+                    <option value="%">Percentage (%)</option>
+                </select>
 
-            <input
-                type="number"
-                value={value}
-                onChange={handleValueChange}
-                placeholder="Value"
-            />
+                <input
+                    type="number"
+                    value={value}
+                    onChange={handleValueChange}
+                    placeholder="Value"
+                />
 
-            <input
-                type="text"
-                value={outputEnvelope}
-                onChange={handleOutputEnvelopeChange}
-                placeholder="Output Envelope"
-            />
-        </li>
+                <input
+                    type="text"
+                    value={envelope}
+                    onChange={handleOutputEnvelopeChange}
+                    placeholder="Output Envelope"
+                />
+            </li>
+            <button onClick={() => budget.removeCategory(category.id)}> Remove Category </button>
+        </ul>
     );
 };
 

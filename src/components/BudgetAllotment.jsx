@@ -7,7 +7,7 @@ const BudgetAllotment = () => {
     return (
         <div>
             <CategoricalOperators />
-            <EnvelopeListj />
+            <EnvelopeList />
         </div>
     );
 };

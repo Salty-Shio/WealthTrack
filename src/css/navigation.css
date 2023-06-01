@@ -1,0 +1,37 @@
+.nav_bar {
+    height: 100vh;
+    width: 15vw;
+    background-color: #f2f2f2;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px;
+}
+
+nav div {
+    /* Add styling for the logo if needed */
+}
+
+ul {
+    list-style: none;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    flex: 1;
+}
+
+li {
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+}
+
+li:hover {
+    background-color: #e8e8e8;
+}

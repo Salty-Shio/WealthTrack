@@ -1,6 +1,6 @@
 import React from "react";
 
-const BudgetListItem = (budget) => {
+const BudgetListItem = ( budget ) => {
     
     return(
     <li>

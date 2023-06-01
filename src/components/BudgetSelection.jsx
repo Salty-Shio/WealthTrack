@@ -10,7 +10,7 @@ const BudgetSelection = () => {
             <div>
                 <button>Create New Budget</button>
             </div>
-            <BudgetSelection />
+            <BudgetList />
             <SelectedBudget />
         </div>
     );
