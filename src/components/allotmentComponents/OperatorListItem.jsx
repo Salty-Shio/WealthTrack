@@ -1,12 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const OperatorListItem = (budget , category = {}) => {
+const OperatorListItem = ({ category = {}, removeSelf }) => {
 
     const [balance, setBalance] = useState(category?.balance || 'runningTotal');
     const [operator, setOperator] = useState(category?.operator || '-');
     const [value, setValue] = useState(category?.value || '');
     const [envelope, setEnvelope] = useState(category?.envelope || '');
+    
+    useEffect(() => {
+        // update the local storage array for the object that has been modified
+        const categoryObject = { // remove the old one and add in the new one at the same place
+            key: category.key,
+            balance,
+            operator,
+            value,
+            envelope,
+        }
+        
+        if (localStorage.getItem("categories")) {
+            const savedCategories = JSON.parse(localStorage.getItem("categories"));
+            const matchingCategoryIndex = savedCategories.findIndex((savedCategory) => savedCategory.key === category.key)
+            if (matchingCategoryIndex !== -1) {
+                const newSavedCategories = [...savedCategories]; // deep copy
+                newSavedCategories.splice(matchingCategoryIndex, 1, categoryObject); // replace the matching object
+                localStorage.setItem("categories", JSON.stringify(newSavedCategories));
+            } else {
+                localStorage.setItem("categories", JSON.stringify([...savedCategories, categoryObject])); // add the new object
+            }
+        } else { de
+            localStorage.setItem("categories", JSON.stringify([categoryObject]));
+        }
+        console.log("Item modified");
+    }, [balance, operator, value, envelope])
 
+    useEffect(() => {
+        return () => {
+
+        }
+    })
     const handleBalanceTypeChange = (event) => {
         setBalance(event.target.value);
     };
@@ -50,7 +81,8 @@ const OperatorListItem = (budget , category = {}) => {
                     placeholder="Output Envelope"
                 />
             </li>
-            <button onClick={() => budget.removeCategory(category.id)}> Remove Category </button>
+            <li>{category.key}</li>
+            <button onClick={() => removeSelf(category.key)}> Remove Category </button>
         </ul>
     );
 };

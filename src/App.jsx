@@ -13,11 +13,11 @@ function App() {
       <div className="App">
         <BrowserRouter>
         <NavigationBar />
-          <Routes>
-            <Route path="/" element={<BudgetSelection />} />
-            <Route path="/allotment" element={<BudgetAllotment />} />
-            <Route path="/envelopes" element={<EnvelopeView />} />
-          </Routes>
+            <Routes>
+                <Route path="/" element={<BudgetSelection />} />
+                <Route path="/allotment" element={<BudgetAllotment />} />
+                <Route path="/envelopes" element={<EnvelopeView />} />
+            </Routes>
         </BrowserRouter>
       </div>
     );
