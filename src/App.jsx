@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useAtom } from 'jotai';
+import { budgetAtom } from './atoms';
+
 import BudgetSelection from './components/BudgetSelection';
 import BudgetAllotment from './components/BudgetAllotment';
 import EnvelopeView from './components/EnvelopeView';
 import NavigationBar from './components/NavigationBar';
+import Budget from './Budget';
+
 import './css/app.css';
 
+
 function App() {
-    const [currentBudget, setCurrentBudget] = useState()
+    const [budget, setBudget] = useAtom(budgetAtom);    
+
+    useEffect(() => {
+        console.log("From App")
+        console.log(budget)
+    }, [budget.budget.length])
 
     return (
       <div className="App">
         <BrowserRouter>
-        <NavigationBar />
+        <NavigationBar className="nav" />
           <Routes>
             <Route path="/" element={<BudgetSelection />} />
             <Route path="/allotment" element={<BudgetAllotment />} />

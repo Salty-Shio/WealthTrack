@@ -2,6 +2,11 @@ class Budget {
     
     constructor() {
         this.budget = [];
+        this.total = {
+            id: -1,
+            balance: 0,
+            transactions: [], // List of transactions
+        };
     }
 
     // Add a new category to the budget

@@ -1,0 +1,74 @@
+/* The entire element*/
+.envelopeView {
+    margin: 10px;
+    font-family: var(--font-montserrat);
+}
+
+.envelopeView h3, h2 {
+    text-align: center;
+}
+
+.envelopeView ol {
+    list-style: none;
+    padding: 0;
+}
+
+/* Envelope */
+details summary {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 1.5rem; /* Adjust the padding as needed */
+}
+
+details summary::before {
+  content: "\25B6";
+  position: absolute;
+  left: 0;
+  margin-right: 0.5rem;
+}
+
+/* Adjust the size and color of the custom arrow icon */
+details summary::before {
+  font-size: 0.8em;
+  color: #555;
+}
+
+/* Transactions */
+.envelope li {
+  padding: 10px;
+  background-color: #f8f8f8;
+}
+
+.envelope li:nth-child(even) {
+  background-color: #ebebeb;
+}
+
+.envelope h3 {
+  margin: 0 0 10px;
+}
+
+.envelopep {
+  margin: 0;
+}
+
+.envelope ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.envelope li > ul > li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.envelope li > ul > li:nth-child(even) {
+  background-color: #ebebeb;
+}
+
+.envelope button {
+  margin-top: 10px;
+}

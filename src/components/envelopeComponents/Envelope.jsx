@@ -1,20 +1,15 @@
-import React from "react";
-
 import React, { useState } from 'react';
 
 const Envelope = ({ categoryName, budgetAmount }) => {
     const [remainingBalance, setRemainingBalance] = useState(budgetAmount);
     const [transactions, setTransactions] = useState([]);
-    const [newTransaction, setNewTransaction] = useState({
-        date: '',
-        name: '',
-        type: '',
-        amount: '',
-    });
+    const [newTransaction, setNewTransaction] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleTransactionAdd = () => {
         setTransactions([...transactions, newTransaction]);
-        setNewTransaction({ date: '', name: '', type: '', amount: '' });
+        setNewTransaction(null);
+        setIsEditing(false);
 
         // Update remaining balance based on the new transaction amount
         const transactionAmount = parseFloat(newTransaction.amount);
@@ -25,10 +20,9 @@ const Envelope = ({ categoryName, budgetAmount }) => {
         setRemainingBalance(updatedRemainingBalance);
     };
 
-    const handleTransactionEdit = (index, updatedTransaction) => {
-        const updatedTransactions = [...transactions];
-        updatedTransactions[index] = updatedTransaction;
-        setTransactions(updatedTransactions);
+    const handleTransactionEdit = (transaction) => {
+        setNewTransaction(transaction);
+        setIsEditing(true);
     };
 
     const handleTransactionDelete = (index) => {
@@ -43,24 +37,60 @@ const Envelope = ({ categoryName, budgetAmount }) => {
     };
 
     return (
-        <li>
+        <li className='envelope'>
             <h3>{categoryName}</h3>
             <p>Remaining Balance: {remainingBalance}</p>
 
-            <button onClick={handleTransactionAdd}>Add Transaction</button>
-
+            {isEditing || newTransaction ? (
+                <form onSubmit={handleTransactionAdd}>
+                    <input
+                        type="text"
+                        name="date"
+                        value={newTransaction ? newTransaction.date : ''}
+                        onChange={handleNewTransactionChange}
+                        placeholder="Date"
+                    />
+                    <input
+                        type="text"
+                        name="name"
+                        value={newTransaction ? newTransaction.name : ''}
+                        onChange={handleNewTransactionChange}
+                        placeholder="Transaction Name"
+                        required
+                    />
+                    <select
+                        name="type"
+                        value={newTransaction ? newTransaction.type : ''}
+                        onChange={handleNewTransactionChange}
+                        required
+                    >
+                        <option value="">Select Type</option>
+                        <option value="withdrawal">Withdrawal</option>
+                        <option value="deposit">Deposit</option>
+                    </select>
+                    <input
+                        type="number"
+                        name="amount"
+                        value={newTransaction ? newTransaction.amount : ''}
+                        onChange={handleNewTransactionChange}
+                        placeholder="Amount"
+                        required
+                    />
+                    <button type="submit">Save Transaction</button>
+                </form>
+            ) : (
+            <>
+            <button onClick={() => setIsEditing(true)}>Add Transaction</button>
             {transactions.length > 0 && (
-                <ul>
+                <ul className="transactions">
                     {transactions.map((transaction, index) => (
-                        <li key={index}>
+                        <li className="transaction" key={index}>
                             <p>Date: {transaction.date}</p>
                             <p>Name: {transaction.name}</p>
                             <p>Type: {transaction.type}</p>
                             <p>Amount: {transaction.amount}</p>
 
-                            <button
-                                onClick={() => handleTransactionEdit(index, transaction)}
-                            >
+                            <button onClick={() => handleTransactionEdit(transaction)}>
                                 Edit Transaction
                             </button>
                             <button onClick={() => handleTransactionDelete(index)}>
@@ -72,41 +102,8 @@ const Envelope = ({ categoryName, budgetAmount }) => {
             )}
 
             {transactions.length === 0 && <p>No transactions found.</p>}
-
-            {/* New Transaction Form */}
-            <form onSubmit={handleTransactionAdd}>
-                <input
-                    type="text"
-                    name="date"
-                    value={newTransaction.date}
-                    onChange={handleNewTransactionChange}
-                    placeholder="Date"
-                />
-                <input
-                    type="text"
-                    name="name"
-                    value={newTransaction.name}
-                    onChange={handleNewTransactionChange}
-                    placeholder="Transaction Name"
-                />
-                <select
-                    name="type"
-                    value={newTransaction.type}
-                    onChange={handleNewTransactionChange}
-                >
-                    <option value="">Select Type</option>
-                    <option value="withdrawal">Withdrawal</option>
-                    <option value="deposit">Deposit</option>
-                </select>
-                <input
-                    type="number"
-                    name="amount"
-                    value={newTransaction.amount}
-                    onChange={handleNewTransactionChange}
-                    placeholder="Amount"
-                />
-                <button type="submit">Save Transaction</button>
-            </form>
+        </>
+        )}
         </li>
     );
 };
