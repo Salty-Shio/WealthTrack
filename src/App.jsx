@@ -7,18 +7,12 @@ import BudgetSelection from './components/BudgetSelection';
 import BudgetAllotment from './components/BudgetAllotment';
 import EnvelopeView from './components/EnvelopeView';
 import NavigationBar from './components/NavigationBar';
-import Budget from './Budget';
 
 import './css/app.css';
 
 
 function App() {
-    const [budget, setBudget] = useAtom(budgetAtom);    
-
-    useEffect(() => {
-        console.log("From App")
-        console.log(budget)
-    }, [budget.budget.length])
+    const [budget, setBudget] = useAtom(budgetAtom);
 
     return (
       <div className="App">

@@ -1,7 +1,7 @@
 class Budget {
     
     constructor() {
-        this.budget = [];
+        this.categories = [];
         this.total = {
             id: -1,
             balance: 0,
@@ -11,7 +11,7 @@ class Budget {
 
     // Add a new category to the budget
     addCategory(balance, operator, value, envelope) {
-        const newId = this.budget.length > 0 ? this.budget[this.budget.length - 1].id + 1: 0;
+        const newId = this.categories.length > 0 ? this.categories[this.categories.length - 1].id + 1: 0;
         const category = {
             id: newId,
             balance,
@@ -21,17 +21,17 @@ class Budget {
             transactions: [], // List of transactions
         };
 
-        this.budget.push(category);
+        this.categories.push(category);
     }
 
     // Remove a category from the budget
     removeCategory(id) {
-        this.budget = this.budget.filter((category) => category.id != id);
+        this.categories = this.categories.filter((category) => category.id != id);
     }
 
     // Add a new transaction to a category
     addTransaction(categoryId, date, name, direction, amount) {
-        const category = this.budget.find((category) => category.id == categoryId)
+        const category = this.categories.find((category) => category.id == categoryId)
 
         const newId = category.transactions > 0 ? category.transactions[category.transactions.length - 1].id + 1 : 0;
         const transaction = {
@@ -47,13 +47,13 @@ class Budget {
 
     // Remove a transaction
     removeTransaction(categoryId, transactionId) {
-        this.budget.find((category) => category.id == categoryId)
+        this.categories.find((category) => category.id == categoryId)
             .transactions.filter((transaction) => transaction.id != transactionId);
     }
 
     // Update the balance of a category based on transactions
     updateCategoryBalance(categoryId) {
-        const category = this.budget.find((category) => category.id == categoryId)
+        const category = this.categories.find((category) => category.id == categoryId)
         let balance = category.balance;
 
         category.transactions.forEach((transaction) => {
@@ -71,7 +71,7 @@ class Budget {
     getOverallRemainingBalance() {
         let overallBalance = 0;
 
-        this.budget.forEach((category) => {
+        this.categories.forEach((category) => {
             overallBalance += category.balance;
         });
 

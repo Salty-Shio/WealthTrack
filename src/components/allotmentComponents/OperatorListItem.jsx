@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useAtom } from "jotai";
+import { budgetAtom } from "../../atoms";
 
-const OperatorListItem = ( budget, category = {}) => {
+const OperatorListItem = (category = {}) => {
+    const [budget, setBudget] = useAtom(budgetAtom);
 
     const [balance, setBalance] = useState(category?.balance || 'runningTotal');
     const [operator, setOperator] = useState(category?.operator || '-');
@@ -22,6 +25,10 @@ const OperatorListItem = ( budget, category = {}) => {
     const handleOutputEnvelopeChange = (event) => {
         setEnvelope(event.target.value);
     };
+
+    const handleRemoveCategory = () => {
+
+    }
 
     return (
     <li className="operatorListItem">
@@ -54,7 +61,7 @@ const OperatorListItem = ( budget, category = {}) => {
             onChange={handleOutputEnvelopeChange}
             placeholder="Output Envelope"
         />
-        <button onClick={() => budget.removeCategory(category.id)}>Remove Category</button>
+        <button onClick={handleRemoveCategory}>Remove Category</button>
     </li>
     );
 
