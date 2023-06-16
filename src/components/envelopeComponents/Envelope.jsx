@@ -1,111 +1,184 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAtom } from "jotai";
+import { budgetAtom } from "../../atoms";
+import TransactionItem from './TransactionItem';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
-const Envelope = ({ categoryName, budgetAmount }) => {
-    const [remainingBalance, setRemainingBalance] = useState(budgetAmount);
+const formattedDate = (inputDate) => {
+    return `${inputDate.getMonth()}/${inputDate.getDate()}/${inputDate.getYear()}`;
+}
+
+function convertToDate(dateString) {
+    const parts = dateString.split("/");
+    const day = parseInt(parts[1], 10);
+    const month = parseInt(parts[0], 10) - 1;  // Months are zero-based (0-11)
+    const year = parseInt(parts[2], 10);
+    
+    return new Date(year, month, day);
+}
+
+const Envelope = ({ category, updateFlag, setUpdateFlag }) => {
+    const [budget, setBudget] = useAtom(budgetAtom);
+    const [addingTransaction, setAddingTransaction] = useState(false);
+    const [editingTransaction, setEditingTransaction] = useState(0);
+    const [remainingBalance, setRemainingBalance] = useState(0)
     const [transactions, setTransactions] = useState([]);
-    const [newTransaction, setNewTransaction] = useState(null);
-    const [isEditing, setIsEditing] = useState(false);
+    const [name, setName] = useState("");
+    const [date, setDate] = useState(new Date());
+    const [transferType, setTransferType] = useState("withdrawal");
+    const [amount, setAmount] = useState("");
+    
 
-    const handleTransactionAdd = () => {
-        setTransactions([...transactions, newTransaction]);
-        setNewTransaction(null);
-        setIsEditing(false);
+    const loadTransactionToFields = (transactionId) => {
+        const transaction = budget.getTransaction(category.id, transactionId);
+        setAmount(transaction.amount);
+        setName(transaction.name);
+        setDate(convertToDate(transaction.date));
+        setTransferType(transaction.transfer);
+    }
 
-        // Update remaining balance based on the new transaction amount
-        const transactionAmount = parseFloat(newTransaction.amount);
-        const updatedRemainingBalance =
-            newTransaction.type === 'withdrawal'
-                ? remainingBalance - transactionAmount
-                : remainingBalance + transactionAmount;
-        setRemainingBalance(updatedRemainingBalance);
-    };
+    const resetFields = () => {
+        setName("");
+        setDate(new Date());
+        setTransferType("withdrawal");
+        setAmount(0);
+    }
+    
+    useEffect(() => {
+        setRemainingBalance(budget.calculateCategoryRemainingBalance(category.id));
+        setBudget((prevBudget) => budget);
+        const loadedTransactions = category.transactions.map((transaction, key) =>
+            <TransactionItem key={key} transaction={transaction} editTransaction={handleStartEditTransaction} removeTransaction={handleRemoveTransaction} />
+        );
+        setTransactions(loadedTransactions);
+        setUpdateFlag(Symbol()); // <-------
+    }, [])
+    
+    /**
+     * @description adds a transaction to an envelope
+     * @param {string} date
+     * @param {string} name
+     * @param {string} transferType
+     * @param {number} amount
+     */
+    const handleAddTransaction = (date, name, transferType, amount) => {
+        budget.addTransaction(category.id, formattedDate(date), name, transferType, parseFloat(parseFloat(amount).toFixed(2)));
+        const calculatedRemaining = budget.calculateCategoryRemainingBalance(category.id);
+        setRemainingBalance(calculatedRemaining);
+        setBudget((prevBudget) => budget);
+        console.log(budget)
+        const loadedTransactions = category.transactions.map((transaction, key) => 
+            <TransactionItem key={key} transaction={transaction} editTransaction={handleStartEditTransaction} removeTransaction={handleRemoveTransaction} />
+        );
+        setTransactions(loadedTransactions);
+        setUpdateFlag(Symbol());
+    }
 
-    const handleTransactionEdit = (transaction) => {
-        setNewTransaction(transaction);
-        setIsEditing(true);
-    };
+    const handleStartEditTransaction = (transactionId) => {
+        loadTransactionToFields(transactionId);
+        setEditingTransaction(transactionId);
+    }
+    const handleEditTransaction = (transactionId, date, name, transferType, amount) => {
+        budget.updateTransaction(category.id, transactionId, formattedDate(date), name, transferType, parseFloat(parseFloat(amount).toFixed(2)));
+        setUpdateFlag(Symbol());
+    }
 
-    const handleTransactionDelete = (index) => {
-        const updatedTransactions = [...transactions];
-        updatedTransactions.splice(index, 1);
-        setTransactions(updatedTransactions);
-    };
+    const handleRemoveTransaction = (transactionId) => {
+        budget.removeTransaction(category.id, transactionId);
+        setBudget((prevBudget) => budget);
+        const calculatedRemaining = budget.calculateCategoryRemainingBalance(category.id);
+        setRemainingBalance(calculatedRemaining);
+        const loadedTransactions = category.transactions.map((transaction, key) =>
+            <TransactionItem key={key} transaction={transaction} editTransaction={handleStartEditTransaction} removeTransaction={handleRemoveTransaction} />
+        );
+        setTransactions(loadedTransactions);
+        setUpdateFlag(Symbol());
+    }
 
-    const handleNewTransactionChange = (event) => {
-        const { name, value } = event.target;
-        setNewTransaction({ ...newTransaction, [name]: value });
-    };
-
-    return (
+    return(
         <li className='envelope'>
-            <h3>{categoryName}</h3>
-            <p>Remaining Balance: {remainingBalance}</p>
+            <div>
+                <h3>{category.envelope}</h3>
+                <h3>Allotted Amount: ${category.totalBalance}</h3>
+                <h3>Remaining: ${remainingBalance}</h3>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Transaction Name</th>
+                        <th>Transfer</th>
+                        <th>Amount</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {transactions}
+                </tbody>
+            </table>
+            {!(addingTransaction || (editingTransaction > 0)) && <button onClick={() => {setAddingTransaction(true)}}>Add Transaction</button>}
+            {(addingTransaction || (editingTransaction > 0)) && 
+                <div>
+                    <label>Date</label>
+                    <DatePicker selected={date} onChange={(newDate) => setDate(newDate)} placeholderText='Select a date' />
 
-            {isEditing || newTransaction ? (
-                <form onSubmit={handleTransactionAdd}>
+                    <label>Transaction Name</label>
                     <input
                         type="text"
-                        name="date"
-                        value={newTransaction ? newTransaction.date : ''}
-                        onChange={handleNewTransactionChange}
-                        placeholder="Date"
-                    />
-                    <input
-                        type="text"
-                        name="name"
-                        value={newTransaction ? newTransaction.name : ''}
-                        onChange={handleNewTransactionChange}
+                        id="transactionName"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         placeholder="Transaction Name"
-                        required
                     />
-                    <select
-                        name="type"
-                        value={newTransaction ? newTransaction.type : ''}
-                        onChange={handleNewTransactionChange}
-                        required
-                    >
-                        <option value="">Select Type</option>
+
+                    <label>Transfer</label>
+                    <select id="transferType" value={transferType} onChange={(e) => setTransferType(e.target.value)}>
                         <option value="withdrawal">Withdrawal</option>
                         <option value="deposit">Deposit</option>
                     </select>
+
+                    <label>Amount</label>
                     <input
-                        type="number"
-                        name="amount"
-                        value={newTransaction ? newTransaction.amount : ''}
-                        onChange={handleNewTransactionChange}
-                        placeholder="Amount"
-                        required
+                        type="text"
+                        id="amount"
+                        value={amount}
+                        onChange={(e) => {
+                            const regexFloat = /^\d+(\.\d*)?$/; // tests if the value is a float
+                            if (regexFloat.test(e.target.value) || e.target.value.length == 0) {
+                                setAmount(e.target.value)
+                            }
+                        }}
+                        placeholder="Transaction Amount"
                     />
-                    <button type="submit">Save Transaction</button>
-                </form>
-            ) : (
-            <>
-            <button onClick={() => setIsEditing(true)}>Add Transaction</button>
-            {transactions.length > 0 && (
-                <ul className="transactions">
-                    {transactions.map((transaction, index) => (
-                        <li className="transaction" key={index}>
-                            <p>Date: {transaction.date}</p>
-                            <p>Name: {transaction.name}</p>
-                            <p>Type: {transaction.type}</p>
-                            <p>Amount: {transaction.amount}</p>
 
-                            <button onClick={() => handleTransactionEdit(transaction)}>
-                                Edit Transaction
-                            </button>
-                            <button onClick={() => handleTransactionDelete(index)}>
-                                Delete Transaction
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            )}
+                    <button 
+                    onClick={() => {
+                        resetFields();
+                        setAddingTransaction(false);
+                        setEditingTransaction(0);
+                    }}
+                    >Cancel</button>
 
-            {transactions.length === 0 && <p>No transactions found.</p>}
-        </>
-        )}
+                    <button
+                        disabled={name.length < 1 || amount == "0"}
+                        onClick={() => {
+                            if (addingTransaction) {
+                                handleAddTransaction(date, name, transferType, amount)
+                            } else {
+                                handleEditTransaction(editingTransaction, date, name, transferType, amount)
+                            }
+                            resetFields();
+                            setAddingTransaction(false);
+                            setEditingTransaction(0);
+                        }}
+                    >Save Transaction</button>
+                </div>
+            }
+            
         </li>
-    );
+    )
 };
 
 export default Envelope;

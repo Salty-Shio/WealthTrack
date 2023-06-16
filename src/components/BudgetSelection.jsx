@@ -5,7 +5,6 @@ import "../css/budgetSelection.css";
 
 const BudgetSelection = () => {
 
-
     return (
         <div className="budgetSelect">
             <div className="newBudget">

@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { budgetAtom } from "../../atoms";
 
-const OperatorListItem = (category = {}) => {
+const CategoryListItem = ({category, setUpdateFlag}) => {
     const [budget, setBudget] = useAtom(budgetAtom);
 
-    const [balance, setBalance] = useState(category?.balance || 'runningTotal');
+    const [balanceType, setBalanceType] = useState(category?.balanceType || 'runningTotal');
     const [operator, setOperator] = useState(category?.operator || '-');
     const [value, setValue] = useState(category?.value || '');
     const [envelope, setEnvelope] = useState(category?.envelope || '');
 
     const handleBalanceTypeChange = (event) => {
-        setBalance(event.target.value);
+        setBalanceType(event.target.value);
     };
-
+    
     const handleOperatorChange = (event) => {
         setOperator(event.target.value);
     };
@@ -26,14 +26,25 @@ const OperatorListItem = (category = {}) => {
         setEnvelope(event.target.value);
     };
 
-    const handleRemoveCategory = () => {
+    useEffect(() => {
+        budget.updateCategoryAttribute(category.id, 'balanceType', balanceType);
+        budget.updateCategoryAttribute(category.id, 'operator', operator);
+        budget.updateCategoryAttribute(category.id, 'value', parseFloat(parseFloat(value).toFixed(2)));
+        budget.updateCategoryAttribute(category.id, 'envelope', envelope);
+        setBudget((prevbudget) => budget);
+        setUpdateFlag(Symbol());
+    }, [balanceType, operator, value, envelope])
 
+    const handleRemoveCategory = () => {
+        budget.removeCategory(category.id);
+        setBudget((prevBudget) => budget);
+        setUpdateFlag(Symbol());
     }
 
     return (
     <li className="operatorListItem">
-        <label htmlFor="balance">Balance Type:</label>
-        <select id="balance" value={balance} onChange={handleBalanceTypeChange}>
+        <label htmlFor="balanceType">Balance Type:</label>
+        <select id="balanceType" value={balanceType} onChange={handleBalanceTypeChange}>
             <option value="runningTotal">Running Total</option>
             <option value="totalBudget">Total Balance</option>
         </select>
@@ -67,4 +78,4 @@ const OperatorListItem = (category = {}) => {
 
 };
 
-export default OperatorListItem;
+export default CategoryListItem;

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useAtom } from 'jotai';
-import { budgetAtom } from './atoms';
+import { Provider } from 'jotai';
 
 import BudgetSelection from './components/BudgetSelection';
 import BudgetAllotment from './components/BudgetAllotment';
@@ -12,10 +11,9 @@ import './css/app.css';
 
 
 function App() {
-    const [budget, setBudget] = useAtom(budgetAtom);
-
     return (
       <div className="App">
+        <Provider>
         <BrowserRouter>
         <NavigationBar className="nav" />
           <Routes>
@@ -24,6 +22,7 @@ function App() {
             <Route path="/envelopes" element={<EnvelopeView />} />
           </Routes>
         </BrowserRouter>
+        </Provider>
       </div>
     );
 }
