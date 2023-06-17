@@ -8,19 +8,20 @@ import "../css/envelopes.css"
 const EnvelopeView = () => {
     const [budget, setBudget] = useAtom(budgetAtom);
     const [envelopes, setEnvelopes] = useState([]);
-    const [total, setTotal] = useState("0");
+    const [total, setTotal] = useState(budget.total.balance);
     const [updateFlag, setUpdateFlag] = useState(Symbol());
     const [overallRemaining, setOverallRemaining] = useState(0);
     const [unallottedMoney, setUnallottedMoney] = useState(0);
 
     useEffect(() => {
         budget.calculateCategoryTotals();
+        budget.calculateOverallRemainingBalance();
         setBudget((prevBudget) => budget);
         const envelopeArray = budget.categories
             .filter((category) => category.value && (category.envelope.length > 0))
             .map((category, key) => <Envelope category={category} key={key} updateFlag={updateFlag} setUpdateFlag={setUpdateFlag} />);
         setEnvelopes(envelopeArray);
-    }, [])
+    }, [updateFlag])
 
     const updateTotal = (e) => {
         const regexFloat = /^\d+(\.\d*)?$/; // tests if the value is a float
@@ -28,7 +29,8 @@ const EnvelopeView = () => {
             setTotal((prevTotal) => e.target.value);
             const newTotalBalance = parseFloat(parseFloat(e.target.value.length > 0 ? e.target.value : "0").toFixed(2));
             budget.total.balance = newTotalBalance;
-            // budget.calculateOverallRemainingBalance();
+            budget.calculateCategoryTotals();
+            budget.calculateOverallRemainingBalance();
             setBudget((prevBudget) => budget);
             setUpdateFlag(Symbol());
         }

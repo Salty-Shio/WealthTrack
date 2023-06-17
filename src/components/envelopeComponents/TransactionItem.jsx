@@ -12,7 +12,7 @@ const TransactionItem = ({ transaction, editTransaction, removeTransaction }) =>
         <td>{transaction.name}</td>
         <td>{capitalize(transaction.transfer)}</td>
         <td>${transaction.amount.toFixed(2)}</td>
-        <td><button onClick={() => editTransaction(transaction.id)}>Edit Transaction</button></td>
+        <td><button onClick={() => {console.log(`Transaction ID: ${transaction.id}`); editTransaction(transaction.id)}}>Edit Transaction</button></td>
         <td><button onClick={() => removeTransaction(transaction.id)}>Remove Transaction</button></td>
       </tr>
     )

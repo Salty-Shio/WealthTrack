@@ -49,7 +49,7 @@ class Budget {
 
         const newId = category.transactions.length > 0 ? category.transactions[category.transactions.length - 1].id + 1 : 1;
         const transaction = {
-            key: newKey, 
+            id: newId, 
             date,
             name,
             transfer,
@@ -94,7 +94,6 @@ class Budget {
     calculateCategoryTotals() {
         let originalTotal = parseFloat(this.total.balance);
         let remainingTotal = parseFloat(this.total.balance);
-        
         for (const category of this.categories) {
             let categoryBalance = 0;
             if (category.operator === "-") {
@@ -107,7 +106,7 @@ class Budget {
                 }
             }
             remainingTotal -= categoryBalance;
-            category.totalBalance = categoryBalance;
+            category.totalBalance = parseFloat(categoryBalance.toFixed(2));
         }
     }
 
@@ -123,20 +122,25 @@ class Budget {
                 remainingBalance += transaction.amount;
             }
         });
-
-        category.remainingBalance = remainingBalance;
+        console.log(`Category ${category.envelope} remaining balance: ${remainingBalance}`)
+        category.remainingBalance = parseFloat(remainingBalance.toFixed(2));
         return remainingBalance;
     }
 
     // Get the overall remaining balance of the budget
     calculateOverallRemainingBalance() {
+        // debugger;
+        for (const category of this.categories) {
+            this.calculateCategoryRemainingBalance(category.id);
+        }
+
         let overallBalance = this.total.balance;
         for (const category of this.categories) {
             const categoryExpendedBalance = category.totalBalance - category.remainingBalance;
             overallBalance -= categoryExpendedBalance;
         }
 
-        return overallBalance;
+        return parseFloat(overallBalance.toFixed(2));
     }
     // Get the overall remaining balance of the budget
     calculateUnallottedMoney() {
@@ -145,7 +149,7 @@ class Budget {
             const allottedMoney = category.totalBalance;
             overallBalance -= allottedMoney;
         }
-        return overallBalance;
+        return parseFloat(overallBalance.toFixed(2));
     }
 }
 

@@ -46,14 +46,19 @@ const Envelope = ({ category, updateFlag, setUpdateFlag }) => {
     }
     
     useEffect(() => {
-        setRemainingBalance(budget.calculateCategoryRemainingBalance(category.id));
+        setRemainingBalance((prevBalance) => budget.calculateCategoryRemainingBalance(category.id));
         setBudget((prevBudget) => budget);
         const loadedTransactions = category.transactions.map((transaction, key) =>
             <TransactionItem key={key} transaction={transaction} editTransaction={handleStartEditTransaction} removeTransaction={handleRemoveTransaction} />
         );
         setTransactions(loadedTransactions);
-        setUpdateFlag(Symbol()); // <-------
-    }, [])
+        // setUpdateFlag(Symbol()); // <-------
+    }, [updateFlag])
+
+    // useEffect(() => {
+    //     console.log("Refreshing!");
+    //     return;
+    // }, [updateFlag])
     
     /**
      * @description adds a transaction to an envelope
@@ -79,6 +84,7 @@ const Envelope = ({ category, updateFlag, setUpdateFlag }) => {
         loadTransactionToFields(transactionId);
         setEditingTransaction(transactionId);
     }
+
     const handleEditTransaction = (transactionId, date, name, transferType, amount) => {
         console.log(transactionId, date, name, transferType, amount);
         budget.updateTransaction(category.id, transactionId, "date", formattedDate(date))
