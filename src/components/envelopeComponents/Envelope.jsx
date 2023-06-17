@@ -80,7 +80,11 @@ const Envelope = ({ category, updateFlag, setUpdateFlag }) => {
         setEditingTransaction(transactionId);
     }
     const handleEditTransaction = (transactionId, date, name, transferType, amount) => {
-        budget.updateTransaction(category.id, transactionId, formattedDate(date), name, transferType, parseFloat(parseFloat(amount).toFixed(2)));
+        console.log(transactionId, date, name, transferType, amount);
+        budget.updateTransaction(category.id, transactionId, "date", formattedDate(date))
+        budget.updateTransaction(category.id, transactionId, "name", name)
+        budget.updateTransaction(category.id, transactionId, "transfer", transferType)
+        budget.updateTransaction(category.id, transactionId, "amount", parseFloat(parseFloat(amount).toFixed(2)))
         setUpdateFlag(Symbol());
     }
 
@@ -98,7 +102,7 @@ const Envelope = ({ category, updateFlag, setUpdateFlag }) => {
 
     return(
         <li className='envelope'>
-            <div>
+            <div className='envelopeHead'>
                 <h3>{category.envelope}</h3>
                 <h3>Allotted Amount: ${category.totalBalance}</h3>
                 <h3>Remaining: ${remainingBalance}</h3>
@@ -120,7 +124,7 @@ const Envelope = ({ category, updateFlag, setUpdateFlag }) => {
             </table>
             {!(addingTransaction || (editingTransaction > 0)) && <button onClick={() => {setAddingTransaction(true)}}>Add Transaction</button>}
             {(addingTransaction || (editingTransaction > 0)) && 
-                <div>
+                <div className='transactionForm'>
                     <label>Date</label>
                     <DatePicker selected={date} onChange={(newDate) => setDate(newDate)} placeholderText='Select a date' />
 
@@ -153,6 +157,7 @@ const Envelope = ({ category, updateFlag, setUpdateFlag }) => {
                         placeholder="Transaction Amount"
                     />
 
+                    <div className='buttonContainer'>
                     <button 
                     onClick={() => {
                         resetFields();
@@ -173,7 +178,8 @@ const Envelope = ({ category, updateFlag, setUpdateFlag }) => {
                             setAddingTransaction(false);
                             setEditingTransaction(0);
                         }}
-                    >Save Transaction</button>
+                        >Save Transaction</button>
+                        </div>
                 </div>
             }
             

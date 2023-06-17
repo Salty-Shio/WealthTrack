@@ -41,7 +41,11 @@ button {
     font-family: var(--font-roboto);
     padding: 10px 20px;
     outline: solid var(--button-outline-inactive) 0px;
-    transition: background-color 0.3s;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #709877;
 }
 
 button:active {
@@ -61,6 +65,7 @@ button:active {
 
 .container h3 {
     text-align: center;
+    color: white;
     padding-top: 7px;
     padding-bottom: 7px;
     background-color: var(--accent-color);
@@ -79,4 +84,34 @@ button:active {
     max-height: 80%;
     max-width: 100%;
     margin: 10px auto 0;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+table thead th {
+  background-color: var(--accent-color-dark);
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+}
+
+
+table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+  background-color: #7abe861a;
 }

@@ -1,7 +1,12 @@
+.scroll {
+    overflow-y: scroll;
+}
+
 /* The entire element*/
 .envelopeView {
     margin: 10px;
     font-family: var(--font-montserrat);
+
 }
 
 .envelopeView h3, h2 {
@@ -13,62 +18,102 @@
     padding: 0;
 }
 
-/* Envelope */
-details summary {
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding-left: 1.5rem; /* Adjust the padding as needed */
+/* Section Head */
+.sectionHead {
+    display: flex;
+    flex-direction: row;
+    outline: 3px var(--accent-color-dark) solid;
+    padding: 5px;
+    width: 99%;
+    border-radius: 5px;
 }
 
-details summary::before {
-  content: "\25B6";
-  position: absolute;
-  left: 0;
-  margin-right: 0.5rem;
+.sectionHead div,
+.sectionHead label, 
+.sectionHeadinput, 
+.sectionHead h3 {
+    margin: auto 0;
+    flex: 1;
+    white-space: nowrap;
 }
 
-/* Adjust the size and color of the custom arrow icon */
-details summary::before {
-  font-size: 0.8em;
-  color: #555;
+.sectionHead label {
+    font-weight: bold;
 }
 
-/* Transactions */
-.envelope li {
-  padding: 10px;
-  background-color: #f8f8f8;
+.sectionHead input {
+    max-height: 40px;
 }
 
-.envelope li:nth-child(even) {
-  background-color: #ebebeb;
+.formGroup {
+    display: flex;
+    flex: 1;
+    align-items: center;
 }
 
-.envelope h3 {
-  margin: 0 0 10px;
+.formGroup:first-child {
+    text-align: right;
+}
+.formGroup:last-child {
+    text-align: left;
+    width: 50%;
 }
 
-.envelopep {
-  margin: 0;
+/* Envelope Header */
+.envelope {
+    max-width: 95%;
+    margin: 0 auto;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding-bottom: 10px;
+    height: 75vh;
+    margin-bottom: 20px;
 }
 
-.envelope ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+.envelope > button {
+    display: block;
+    margin: 10px auto 0;
 }
 
-.envelope li > ul > li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
+.envelopeHead {
+    display: flex;
+    align-items: center;
+    background-color: var(--accent-color);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
-.envelope li > ul > li:nth-child(even) {
-  background-color: #ebebeb;
+.envelopeHead h3 {
+    flex: 1;
+    margin: 10px 0;
 }
 
-.envelope button {
-  margin-top: 10px;
+.envelopeHead h3:first-of-type {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.envelopeHead h3:last-of-type {
+    text-align: right;
+    padding-right: 10px;
+}
+
+/* Transaction Form */
+.transactionForm {
+    max-width: 95%;
+    margin: 0 auto;
+}
+
+.transactionForm button {
+    display: block;
+    margin: 10px auto 0;
+}
+
+.transactionForm .buttonContainer {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: row;
+    gap: 10px;
+    width: 50%;
+    justify-content: center;
 }

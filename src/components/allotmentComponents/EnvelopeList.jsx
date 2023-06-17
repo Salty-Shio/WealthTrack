@@ -11,13 +11,23 @@ const EnvelopeList = ({ updateFlag }) => {
     }, [updateFlag])
 
     return (
-        <div className="container">
+        <div className="container envelopeList">
             <h3> Envelopes </h3>
-            <ol>
-                {budget.categories.filter((category) =>
-                 category.value && (category.envelope.length > 0)).map((category, key) =>
-                <EnvelopeListItem category={category} key={key} />)}
-            </ol>
+            <div className="tableContainer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Envelope</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {budget.categories.filter((category) =>
+                            category.value && (category.envelope.length > 0)).map((category, key) =>
+                            <EnvelopeListItem category={category} key={key} />)}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

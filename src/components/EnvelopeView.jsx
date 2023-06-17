@@ -42,23 +42,26 @@ const EnvelopeView = () => {
     }, [updateFlag])
 
     return (
-        <div className="envelopeView">
-            <h2>Envelope View</h2>
-            <div>
-                <label>Total Budget $</label>
-                <input
-                    type="text"
-                    id="total"
-                    value={total}
-                    onChange={updateTotal}
-                    placeholder="0000.00"
-                />
-                <h3>Remaining Total Balance: ${overallRemaining}</h3>
-                <h3>Unalloted Money: ${unallottedMoney}</h3>
+        <div className="scroll">
+            <div className="envelopeView">
+                <div className="sectionHead">
+                    <div className="formGroup">
+                        <label>Total Budget $</label>
+                        <input
+                            type="text"
+                            id="total"
+                            value={total}
+                            onChange={updateTotal}
+                            placeholder="0000.00"
+                        />
+                    </div>
+                    <h3>Remaining Total Balance: ${overallRemaining}</h3>
+                    <h3>Unalloted Money: ${unallottedMoney}</h3>
+                </div>
+                <ol>
+                    {envelopes}
+                </ol>
             </div>
-            <ol>
-                {envelopes}
-            </ol>
         </div>
     );
 };
