@@ -1,12 +1,117 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+:root {
+    --accent-color: #7abe87; 
+    --accent-color-dark: #71a97b; 
+    --button-font-color: #fff;
+    --button-font-color-active: #000;
+    --button-outline-inactive:#ffffff00;
+    --button-outline-inactive:#71a97b;
+    --font-roboto: 'Roboto', sans-serif;
+    --font-montserrat: 'Montserrat', sans-serif;
+}
+
 .App {
-    display: flex;
+    overflow-x: hidden;
+    display: grid;
     width: 100vw;
     height: 100vh;
-    flex-direction: row;
+    grid-template-columns: 150px 1fr;
     padding: 0;
     margin: 0;
 }
 
+.nav {
+    grid-column: 0 / 1;
+}
+
 body {
     margin: 0;
+}
+
+
+/* Standard Button CSS */
+button {
+    border-radius: 7px;
+    border: none;
+    background-color: var(--accent-color-dark);
+    color: var(--button-font-color);
+    font-family: var(--font-roboto);
+    padding: 10px 20px;
+    outline: solid var(--button-outline-inactive) 0px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #709877;
+}
+
+button:active {
+    background-color: var(--accent-outline-color);
+    color: var(--button-font-color-active);
+    outline: solid var(--accent-color) 5px;
+    transition: .1s;
+}
+
+/* List Containers */
+.container {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    max-height: calc(100vh - 20px);
+    max-width: calc((((100vw - 150px) / 2) - 10px))
+}
+
+.container h3 {
+    text-align: center;
+    color: white;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    background-color: var(--accent-color);
+    margin: 0;
+    font-size: 1.5em;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-bottom: 5px;
+}
+
+.container ol {
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px;
+    overflow-y: scroll;
+    max-height: 80%;
+    max-width: 100%;
+    margin: 10px auto 0;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+table thead th {
+  background-color: var(--accent-color-dark);
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+}
+
+
+table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+  background-color: #7abe861a;
 }

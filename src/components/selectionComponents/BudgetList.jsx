@@ -3,7 +3,7 @@ import React from "react";
 const BudgetList = () => {
 
     return (
-        <div>
+        <div className="container">
             <h3>Existing Budgets</h3>
             <ul>
                 {/* Auto Generated List */}

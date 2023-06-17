@@ -1,0 +1,119 @@
+.scroll {
+    overflow-y: scroll;
+}
+
+/* The entire element*/
+.envelopeView {
+    margin: 10px;
+    font-family: var(--font-montserrat);
+
+}
+
+.envelopeView h3, h2 {
+    text-align: center;
+}
+
+.envelopeView ol {
+    list-style: none;
+    padding: 0;
+}
+
+/* Section Head */
+.sectionHead {
+    display: flex;
+    flex-direction: row;
+    outline: 3px var(--accent-color-dark) solid;
+    padding: 5px;
+    width: 99%;
+    border-radius: 5px;
+}
+
+.sectionHead div,
+.sectionHead label, 
+.sectionHeadinput, 
+.sectionHead h3 {
+    margin: auto 0;
+    flex: 1;
+    white-space: nowrap;
+}
+
+.sectionHead label {
+    font-weight: bold;
+}
+
+.sectionHead input {
+    max-height: 40px;
+}
+
+.formGroup {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+.formGroup:first-child {
+    text-align: right;
+}
+.formGroup:last-child {
+    text-align: left;
+    width: 50%;
+}
+
+/* Envelope Header */
+.envelope {
+    max-width: 95%;
+    margin: 0 auto;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding-bottom: 10px;
+    height: 75vh;
+    margin-bottom: 20px;
+}
+
+.envelope > button {
+    display: block;
+    margin: 10px auto 0;
+}
+
+.envelopeHead {
+    display: flex;
+    align-items: center;
+    background-color: var(--accent-color);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.envelopeHead h3 {
+    flex: 1;
+    margin: 10px 0;
+}
+
+.envelopeHead h3:first-of-type {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.envelopeHead h3:last-of-type {
+    text-align: right;
+    padding-right: 10px;
+}
+
+/* Transaction Form */
+.transactionForm {
+    max-width: 95%;
+    margin: 0 auto;
+}
+
+.transactionForm button {
+    display: block;
+    margin: 10px auto 0;
+}
+
+.transactionForm .buttonContainer {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: row;
+    gap: 10px;
+    width: 50%;
+    justify-content: center;
+}
