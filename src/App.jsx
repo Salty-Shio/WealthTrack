@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useAuth } from "./database/AuthContext";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'jotai';
 
@@ -12,29 +13,30 @@ import './css/app.css';
 
 
 function App() {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const { currentUser } = useAuth();
 
     useEffect(() => {
-      if (localStorage.getItem("loggedIn")) {
-          // verify credentials, and if successful, set loggedIn to true.
-          setLoggedIn(true);
-      }
-    }, [])
-    
+        setLoading(false);
+    }, []);
+
     return (
       <div className="App">
+        {!loading &&
         <Provider>
-        <BrowserRouter>
-        <NavigationBar className="nav" />
-          <Routes>
-            <Route path="/" element={loggedIn ? <BudgetSelection /> : <Navigate to="/login" />} exact />
-            <Route path="/login" element={<LoginPage setLoggedIn={setLoggedIn} />} />
-            <Route path="/allotment" element={loggedIn ? <BudgetAllotment /> : <Navigate to="/login" />} />
-            <Route path="/envelopes" element={loggedIn ? <EnvelopeView /> : <Navigate to="login" />} />
-            <Route path="*" element={loggedIn ? <NotFound /> : <Navigate to="login" />} />
-          </Routes>
-        </BrowserRouter>
+            <BrowserRouter>
+            {currentUser && <NavigationBar className="nav" />}
+            <Routes>
+                <Route path="/" element={currentUser ? <BudgetSelection /> : <Navigate to="/login" />} exact />
+                <Route path="/" element={<BudgetSelection />}/>
+                <Route path="/login" element={<LoginPage  />} />
+                <Route path="/allotment" element={currentUser ? <BudgetAllotment /> : <Navigate to="/login" />} />
+                <Route path="/envelopes" element={currentUser ? <EnvelopeView /> : <Navigate to="login" />} />
+                <Route path="*" element={currentUser ? <NotFound /> : <Navigate to="login" />} />
+            </Routes>
+            </BrowserRouter>
         </Provider>
+        }
       </div>
     );
 }

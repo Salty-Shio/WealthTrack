@@ -6,8 +6,6 @@ This app is run through node package manager. To open this app up on your comput
 
 This app was used to learn the basics of creating a react app including user interactivity, recording data, and updating state.
 
-{Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the software running (starting the server and navigating through the web pages) and a walkthrough of the code.}
-
 [Software Demo Video](https://youtu.be/4kGqFDGeQkQ)
 
 # Web Pages
@@ -36,8 +34,6 @@ The packages used were:
 * [Datepicker Documentaion](https://www.npmjs.com/package/react-datepicker)
 
 # Future Work
-
-{Make a list of things that you need to fix, improve, and add in the future.}
 
 * User Authentication - Allowing the user to sign up with the site will allow us to store user specific data on a server.
 * Database Linkup - The current iteration of the project is not linked to a database. This means that any instance of the budget is stored within the session and is lost upon navigating away from the page or closing the tab or browser. Hooking up to the browser would allow the user to store their data for later use.

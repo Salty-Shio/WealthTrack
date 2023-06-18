@@ -1,6 +1,10 @@
+import {v4 as uuidv4} from "uuid";
+
 class Budget {
     
     constructor() {
+        this.id = uuidv4(); 
+        this.name = "Unnamed Budget"
         this.categories = [];
         this.total = {
             id: -1,
@@ -129,7 +133,6 @@ class Budget {
 
     // Get the overall remaining balance of the budget
     calculateOverallRemainingBalance() {
-        // debugger;
         for (const category of this.categories) {
             this.calculateCategoryRemainingBalance(category.id);
         }
@@ -150,6 +153,13 @@ class Budget {
             overallBalance -= allottedMoney;
         }
         return parseFloat(overallBalance.toFixed(2));
+    }
+
+    // Function to load Budget data from firebase
+    load(data) {
+        this.categories = data.categories;
+        this.total = data.total;
+        this.name = data.name;
     }
 }
 

@@ -17,11 +17,7 @@ const EnvelopeView = () => {
         budget.calculateCategoryTotals();
         budget.calculateOverallRemainingBalance();
         setBudget((prevBudget) => budget);
-        const envelopeArray = budget.categories
-            .filter((category) => category.value && (category.envelope.length > 0))
-            .map((category, key) => <Envelope category={category} key={key} updateFlag={updateFlag} setUpdateFlag={setUpdateFlag} />);
-        setEnvelopes(envelopeArray);
-    }, [updateFlag])
+    }, [])
 
     const updateTotal = (e) => {
         const regexFloat = /^\d+(\.\d*)?$/; // tests if the value is a float
@@ -41,6 +37,10 @@ const EnvelopeView = () => {
         setOverallRemaining((prevValue) => newOverallRemaining);
         const newUnallottedMoney = budget.calculateUnallottedMoney();
         setUnallottedMoney(newUnallottedMoney);
+        const envelopeArray = budget.categories
+            .filter((category) => category.value && (category.envelope.length > 0))
+            .map((category, key) => <Envelope category={category} key={key} updateFlag={updateFlag} setUpdateFlag={setUpdateFlag} />);
+        setEnvelopes(envelopeArray);
     }, [updateFlag])
 
     return (
