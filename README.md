@@ -1,3 +1,4 @@
+## Version 1
 # Overview
 
 This is a simple react app that allows the user to budget. This is done through defining a series of categories, and diving money up among the category. The app also allows the user to record the transactions that have been made in each category which allows the user to track their expenses and view what is remaining in each category.
@@ -38,3 +39,30 @@ The packages used were:
 * User Authentication - Allowing the user to sign up with the site will allow us to store user specific data on a server.
 * Database Linkup - The current iteration of the project is not linked to a database. This means that any instance of the budget is stored within the session and is lost upon navigating away from the page or closing the tab or browser. Hooking up to the browser would allow the user to store their data for later use.
 * Category Reordering - Currently there is no way to reorder the categories. This means that to change a category that requires the running total you would need to manually remove categories or add categories above. Allowing reordering would solve this inconvenience.
+
+## Version 2
+# Overview
+This is the implementation of Firebase into the wealthrack app. This changes the functionality of the app greatly. The puprose of this was to gain database skills that allow me to hook a frontend up to a backend which allowed me to keep data persistant throughout sessions as well as allows the user to have more than just one budget.
+
+This required me to add an authentication to the application itself which hooks into Firebase's preexisting authentication protocols. Currently it is a baseline implementation, with the possiblity of more complex security checks possible. Once authenticated the user then is given the same options as before but with the added functionality of being able to create new budgets, save budgets, load budgets, and delete budgets.
+
+[Software Demo Video](https://youtu.be/WIqW6YLb6T8)
+
+# Cloud Database
+
+I am using firebase for this project. The structure of the database is fairly simple. Using the standard authentication for a user on firebase, each user has a document stored on firebase with the userID as the name. Each of these documents contains a collection of budgets with a unique generated ID. Each budget contains data in the same form it is stored on the wealthtrack frontend. This makes it easy to load data into the frontend as well as to send it to the backend.
+
+# Development Environment
+
+The only addition to the tools that were previously used are the firebase package as well as the firebase application itself. The application can be found [here](https://console.firebase.google.com/).
+
+# Useful Websites
+The same websites as before were used in addition to the following:
+
+- [Firebase Documentation](https://firebase.google.com/docs/?hl=en&authuser=0&_gl=1*1pd37l2*_ga*MTkwNDgyODg3NS4xNjgyOTgxNjg2*_ga_CW55HF8NVT*MTY4NzA3MDM1OC45LjEuMTY4NzA3MDQxNy4wLjAuMA..)
+
+# Future Work
+
+- There is still no way to reorder the data within the app. This to both the transactions and the categories. This would greatly improve the usablity of the application itself. 
+- There is currently no feature that checks if the budget that you are currently creating has the same id as a budget in the database. This means that the ability to edit budgets does not exist. Rather, you load a copy, save the copy, and then delete the old copy manually.
+- More secure user authentication as well as the ability to manage your account with options such as getting a new password if you forgot yours, deleting your account, allowing users to pick usernames over emails would all be something that would streamline the app to make it more flexible.
