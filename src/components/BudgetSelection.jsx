@@ -1,4 +1,4 @@
-import React, { useState, useEffect }from "react";
+import React, { useState }from "react";
 import BudgetList from "./selectionComponents/BudgetList.jsx";
 import SelectedBudget from "./selectionComponents/SelectedBudget.jsx";
 import "../css/budgetSelection.css";
